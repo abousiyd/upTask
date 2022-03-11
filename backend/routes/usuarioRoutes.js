@@ -1,5 +1,5 @@
-import Express from "express";
-const router = Express.Router()
+import express from "express";
+const router = express.Router()
 
 import {registrar, autenticar, confirmar, olvidarPassword, comprobarToken, nuevoPassword, perfil} from "../controllers/usuarioController.js"
 import checkAuth from "../middleware/checkAuth.js"

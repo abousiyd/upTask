@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
-
 const proyectosSchema = mongoose.Schema({
-    name:{
+    nombre:{
         type: String,
         trim: true,
         require: true
@@ -12,10 +11,6 @@ const proyectosSchema = mongoose.Schema({
         trim: true,
         require: true
     },
-    fechaEntrega:{
-        type: Date,
-        trim: Date.now()
-    },
     cliente:{
         type: String,
         trim: true,
@@ -24,6 +19,10 @@ const proyectosSchema = mongoose.Schema({
     creador:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario'
+    },
+    fechaEntrega:{
+        type: Date,
+        trim: Date.now()
     },
     Colaboradores: [
         {
@@ -37,6 +36,6 @@ const proyectosSchema = mongoose.Schema({
     }
 )
 
-const Proyecto = mongoose-module("Proyecto", proyectosSchema)
+const Proyecto = mongoose.model("Proyecto", proyectosSchema)
 
 export default Proyecto;
