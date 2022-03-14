@@ -1,4 +1,6 @@
 import Proyecto from "../models/Proyecto.js"
+import Tarea from "../models/Tarea.js"
+
 
 //crear nuevo proyecto
 const nuevoProyecto = async (req, res) => {
@@ -31,7 +33,14 @@ const obtenerProyecto = async (req, res) => {
             return res.status(401).json({msg: "Acción no valida"})
         }
 
-        return res.json(proyecto)
+        //Obtener las tareas del proyecto:
+        const tareas = await Tarea.find().where("proyecto").equals(proyecto._id)
+        // return res.json( proyecto)
+        return res.json({
+            tareas, 
+            proyecto
+        })
+
     }catch(error){ 
         return res.status(404).json({msg: "No encuentrado"})
     }
@@ -91,7 +100,22 @@ const agregarColaborador = async (req, res) => {};
 
 const eliminarColaborador = async (req, res) => {};
 
-const obtenerTareas = async (req, res) => {};
+const obtenerTareas = async (req, res) => {
+
+    // ya es mejor importar las tareas desde proyecto directamente, una ves funciona correctamente ya se puede eliminar la funcion obtenerTareas
+
+    // const { params: {id} } = req
+    // const existeProyecto = await Proyecto.findById(id)
+    
+    // if(!existeProyecto) {
+    //     const error = new Error("No encontrado")
+    //     return res.status(404).json({msg: error.message})
+    // }
+    
+    // const tareas = await Tarea.find().where("proyecto").equals(id)
+    // console.log(tareas, 8888)
+    // res.json(tareas)
+};
 
 
 export {
