@@ -70,6 +70,7 @@ const confirmar = async (req, res) => {
     try{
         usuarioConfirmar.confirmado = true;
         usuarioConfirmar.token = ''; // la llave token se usa una sola vez para logear, despues se borra, asi no sea visto para utros usuarios.
+        usuarioConfirmar.save()
         res.json({msg: "Usuario confirmado correctamente"})
     }catch(error){
         console.log(error)
