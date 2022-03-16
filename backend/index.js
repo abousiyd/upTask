@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cors from "cors"
 import conectarDB from "./config/db.js"
 import usuarioRoutes from "./routes/usuarioRoutes.js"
 import proyectoRoutes from "./routes/proyectoRoutes.js"
@@ -13,6 +14,20 @@ app.use(express.json())
 dotenv.config()
 
 conectarDB()
+
+const whitelist = [process.env.FRONTEND_URL, 'http://localhost:4000']
+const corsOptions = {
+    origin: function(origin, callback) {
+        callback(null, true)
+
+        // if (whitelist.includes(origin)) {
+        //     callback(null, true)
+        // }else {
+        //     callback(new Error('Not allowed by CORS'))
+        // }
+    }
+}
+app.use(cors(corsOptions))
 
 //Routing
 app.use('/api/usuarios', usuarioRoutes)
