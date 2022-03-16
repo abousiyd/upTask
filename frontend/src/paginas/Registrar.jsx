@@ -17,9 +17,8 @@ const Registrar = () => {
     
 
     const handleOnSubmit = async (e) => {
-        console.log(123)
         e.preventDefault()
-
+        
         if([nombre, email, password, repetirPassword].includes('')) {
             setAlerta({
                 msg: "Todos los campos son obligatorios",
@@ -49,11 +48,10 @@ const Registrar = () => {
 
         try{
             // estoy importando el url para hacer llamada al servidor des de axios
-            const data = await axios().post(`/usuarios`, {nombre, password, email})
+            const {data} = await axios().post(`/usuarios`, {nombre, password, email})
             // const data = await axios().post(`http://localhost:4000/api/usuarios`, {nombre, password, email})
-            
             setAlerta({
-                msg: data?.msg,
+                msg: data.msg,
                 error: false
             })
 
@@ -65,9 +63,8 @@ const Registrar = () => {
 
         }catch(error) {
             // error del servidor
-            console.log(error, 8888)
             setAlerta({
-                msg: error.response?.data?.msg,
+                msg: error.response.data.msg,
                 error: true
             })
             eliminarAlerta()
