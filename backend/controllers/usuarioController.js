@@ -1,7 +1,7 @@
 import Usuario from "../models/Usuario.js"
 import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generarJWT.js";
-import {emailRegistro} from "../helpers/email.js"
+import {emailRegistro, emailOlvidePassword} from "../helpers/email.js"
 
 
 const registrar = async (req, res) => {
@@ -18,6 +18,7 @@ const registrar = async (req, res) => {
         usuario.token = generarId()
         await usuario.save();
 
+        //pasar valores para email que se envia para confirmar cuenta
         emailRegistro({
             nombre: usuario.nombre,
             email: usuario.email,
@@ -81,8 +82,6 @@ const confirmar = async (req, res) => {
 const olvidarPassword = async (req, res) => {
     const { body: {email}} = req
     const usuario = await Usuario.findOne({email})
-    await usuario.save()
-    res.json({msg: "Hemos enviado un email con las instrucciones"})
     if(!usuario) {
         const error = new Error("El usuario no existe")
         return res.status(404).json({msg: error.message})
@@ -90,7 +89,15 @@ const olvidarPassword = async (req, res) => {
 
     try{
         usuario.token = generarId()
-        console.log("aqi etamos", usuario)
+        await usuario.save()
+        //enviar email
+        emailOlvidePassword({
+            nombre: usuario.nombre,
+            email: usuario.email,
+            token: usuario.token
+        })
+
+        res.json({msg: "Hemos enviado un email con las instrucciones"})
     }catch(error) {
         console.log(error)
     }

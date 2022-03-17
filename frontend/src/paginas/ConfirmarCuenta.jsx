@@ -8,8 +8,6 @@ const ConfirmarCuenta = () => {
   const params = useParams() // obtenir el id o token del usuario, que se asigna en el phat de la routas: App.jsx   >>> <Route path="confirmar/:id" index element={<ConfirmarCuenta />} />
   const {id} = params
 
-console.log(id)
-
   const [alerta, setAlerta] = useState({})
   const [cuentaConfirmada, setCuentaConfirmada] = useState(false)
 
@@ -21,14 +19,14 @@ console.log(id)
         //no escribo toda la url pk en axios tengo variable almacenada
         const url = `/usuarios/confirmar/${id}`
         const {data} = await axios().get(url)
-        console.log(data, 121212)
+   
         setAlerta({
           msg: data.msg,
           error: false
         })
         setCuentaConfirmada(true)
       }catch(error) {
-        console.log(error)
+        
         setAlerta({
           msg: error.response.data.msg,
           error: true
