@@ -4,10 +4,12 @@ const AuthContext = createContext()
 
 const AuthProvidor = ({children}) => {
 
+    const [auth, setAuth] = useState({}) // para returnar datos una vez estamos logeados
+
     return (
         < AuthContext.Provider
             value={{
-
+                setAuth
             }}
         >
             {children}
