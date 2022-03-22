@@ -1,7 +1,54 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import {useState} from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import Alerta from '../components/Alerta';
+import axios from "../../axios"
+
 
 const Login = () => {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [alerta, setAlerta] = useState({})
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        
+        // if(email === '' || password === '') {
+        if([email, password].includes('')) {
+
+            setAlerta({
+                msg: "Todos los campos son obligatorios",
+                error: true
+            })
+            eliminarAlerta()
+            return
+        }
+        try{
+            const {data} = await axios().post(`/usuarios/login`, {email, password})
+            console.log(data, 1234567)
+            localStorage.setItem('token', data.token)
+
+        }catch(error) {
+            setAlerta({
+                msg: error.response.data.msg,
+                error: true
+            })
+            eliminarAlerta()
+            console.log(error.response.data.msg)
+        }
+    }
+
+    const eliminarAlerta = () => {
+        setTimeout( () => {
+            setAlerta({
+                msg: null,
+                error: false
+            })
+        }, 8000 )
+    }
+
+    const {msg} = alerta
+
     return (
 
         <>
@@ -9,7 +56,12 @@ const Login = () => {
                 Inicia sesión y administra tus <span className=' text-slate-700'>proyectos</span>
             </h1>
 
-            <form className="my-10 bg-white shadow rounded-lg p-10">
+            {msg && <Alerta alerta={alerta} />}
+
+            <form 
+                className="my-10 bg-white shadow rounded-lg p-10"
+                onSubmit={handleSubmit}
+            >
                 <div className='my-5'>
 
                     <label
@@ -22,6 +74,8 @@ const Login = () => {
                         type="email" 
                         placeholder='Email de registro' 
                         className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                         />
                 </div>
 
@@ -37,6 +91,8 @@ const Login = () => {
                         type="password" 
                         placeholder='Password de registro' 
                         className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                         />
                 </div>
 
