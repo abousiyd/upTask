@@ -32,6 +32,7 @@ const Login = () => {
             console.log(data, 1234567)
             localStorage.setItem('token', data.token)
             setAuth(data)
+            
         }catch(error) {
             setAlerta({
                 msg: error.response.data.msg,
