@@ -1,4 +1,5 @@
 import {useState, useEffect, createContext} from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from '../../axios'
 
 const AuthContext = createContext()
@@ -6,6 +7,8 @@ const AuthContext = createContext()
 const AuthProvidor = ({children}) => {
 
     const [auth, setAuth] = useState({}) // para returnar datos una vez estamos logeados
+
+    const navigate = useNavigate()
 
     useEffect( () => {
         const autenticarUsuario = async () => {
@@ -18,20 +21,18 @@ const AuthProvidor = ({children}) => {
             const config = {
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             }
     
             try{
                 const { data } = await axios().get(`/usuarios/perfil`, config)
                 setAuth(data)
-                console.log(data)
+                navigate('/proyectos')
             }catch(error) {
-    
+                setAuth({})
             }
         }
-
-
         autenticarUsuario()
     }, [])
 
