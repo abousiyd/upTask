@@ -6,7 +6,7 @@ import PreviewProyecto from '../components/PreviewProyecto'
 const Proyectos = () => {
 
   const {proyectos} = useProyectos()
-  console.log(proyectos, 33322111)
+  // console.log(proyectos, 33322111)
 
   return (
     <>
@@ -16,7 +16,7 @@ const Proyectos = () => {
         {proyectos.length ? 
           proyectos.map( proyecto => (
             <PreviewProyecto 
-              key={proyectos._id}
+              key={proyecto._id}
               proyecto={proyecto}
             />
           ))

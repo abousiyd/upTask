@@ -26,8 +26,7 @@ const ProyectosProvider = ({children}) => {
 
                 const {data} = await axios().get('/proyectos', config)
                 setProyectos(data)
-                console.log(data)
-
+                // console.log(data)
             }catch(error){
                 console.log(error)
             }
@@ -62,8 +61,11 @@ const ProyectosProvider = ({children}) => {
                 }
             }
 
-            await axios().post('/proyectos', proyecto, config)
-
+            const { data } = await axios().post('/proyectos', proyecto, config)
+            setProyectos([  // setear estado de proyectos
+                ...proyectos,
+                data
+            ])
             setAlerta({
                 msg: "Proyecto Creado Correctamente",
                 error: false
@@ -74,8 +76,30 @@ const ProyectosProvider = ({children}) => {
             }, 3000)
 
         }catch(error) {
-
+            console.log(error)
         }
+    }
+
+    const mostrarProyecto = async (id) =>{
+        try{
+            const token = localStorage.getItem('token')
+            if(!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await axios().get(`/proyectos/${id}`, config)
+            console.log(data)
+
+
+        }catch(error) {
+            console.log(error)
+        }
+
     }
 
     return (
@@ -84,7 +108,8 @@ const ProyectosProvider = ({children}) => {
                 proyectos,
                 mostrarAlerta,
                 alerta,
-                submitProyecto
+                submitProyecto,
+                mostrarProyecto
             }}
         >{children}
         </ProyectosContext.Provider> 

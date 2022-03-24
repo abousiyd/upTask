@@ -32,14 +32,14 @@ const obtenerProyecto = async (req, res) => {
         if(proyecto.creador.toString() !== req.usuario._id.toString()) {
             return res.status(401).json({msg: "Acción no valida"})
         }
-
+        return res.json(proyecto)
         //Obtener las tareas del proyecto:
-        const tareas = await Tarea.find().where("proyecto").equals(proyecto._id)
+        // const tareas = await Tarea.find().where("proyecto").equals(proyecto._id)
         // return res.json( proyecto)
-        return res.json({
-            tareas, 
-            proyecto
-        })
+        // return res.json({
+        //     tareas, 
+        //     proyecto
+        // })
 
     }catch(error){ 
         return res.status(404).json({msg: "No encuentrado"})
