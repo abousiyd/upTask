@@ -2,7 +2,6 @@ import { useState, useEffect, createContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../axios'
 
-
 const ProyectosContext = createContext()
 
 const ProyectosProvider = ({children}) => {
@@ -11,6 +10,30 @@ const ProyectosProvider = ({children}) => {
     const [alerta, setAlerta] = useState([])
 
     const navigate = useNavigate()
+
+    useEffect( () => {
+        const mostrarProyectos =  async () => {
+            try{
+                const token = localStorage.getItem('token')
+                if(!token) return
+
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+
+                const {data} = await axios().get('/proyectos', config)
+                setProyectos(data)
+                console.log(data)
+
+            }catch(error){
+                console.log(error)
+            }
+        }
+        mostrarProyectos()
+    }, [])
 
     const mostrarAlerta = (alerta) => {
         setAlerta(alerta)        
@@ -39,8 +62,7 @@ const ProyectosProvider = ({children}) => {
                 }
             }
 
-            const {data} = await axios().post('/proyectos', proyecto, config)
-            console.log(data, 9000)
+            await axios().post('/proyectos', proyecto, config)
 
             setAlerta({
                 msg: "Proyecto Creado Correctamente",

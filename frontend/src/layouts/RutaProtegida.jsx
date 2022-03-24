@@ -7,8 +7,6 @@ const RutaProtegida = () => {
 
     const { auth } = useAuth()
 
-    console.log(auth, 1100)
-
   return (
     <>
     {auth._id ? 
